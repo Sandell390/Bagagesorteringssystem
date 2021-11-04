@@ -8,16 +8,17 @@ namespace Bagagesorteringssystem
 {
     public class Baggage
     {
-        private int privatenumber;
+        public int nr;
+
+        public static int nOfBaggage;
 
         private string destination;
 
-        public Baggage()
+        public Baggage(string destination)
         {
-
+            this.destination = destination;
+            nr = nOfBaggage;
+            nOfBaggage++;
         }
-
-
-
     }
 }
