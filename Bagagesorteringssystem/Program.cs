@@ -13,13 +13,13 @@ namespace Bagagesorteringssystem
             producer.Name = "Producer";
             producer.Start();
 
-            //Thread sorter = new Thread(GUI.SortingView);
-            //sorter.Name = "Sorter";
-            //sorter.Start();
+            Thread sorter = new Thread(GUI.SortingView);
+            sorter.Name = "Sorter";
+            sorter.Start();
 
-            //Thread plane = new Thread(GUI.PlaneView);
-            //plane.Name = "Plane";
-            //plane.Start();
+            Thread plane = new Thread(GUI.PlaneView);
+            plane.Name = "Plane";
+            plane.Start();
 
             Console.ReadLine();
         }

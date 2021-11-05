@@ -24,17 +24,39 @@ namespace Bagagesorteringssystem
 
         public string BagageProducer()
         {
-            for (int i = 0; i < airDesks.Count; i++)
+            lock (_producerLock)
             {
-                string msg = airDesks[i].AddBaggage();
-                if (msg != "")
+                for (int i = 0; i < airDesks.Count; i++)
                 {
-                    return msg;
+                    string msg = airDesks[i].AddBaggage();
+                    if (msg != "")
+                    {
+                        return msg;
+                    }
                 }
             }
+            return "";
+        }
 
+        public void ProducerWait()
+        {
+            for (int i = 0; i < airDesks.Count; i++)
+            {
+                if (airDesks[i].baggages.All(x => x != null))
+                {
+                    Monitor.Enter(_producerLock);
 
-            return "Producer Waits";
+                    try
+                    {
+                        Monitor.Wait(_producerLock);
+                    }
+                    finally
+                    {
+                        Monitor.Exit(_producerLock);
+                    }
+                }
+            }
+            
         }
 
     }

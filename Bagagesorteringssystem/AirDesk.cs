@@ -15,7 +15,7 @@ namespace Bagagesorteringssystem
 
         public Baggage[] baggages = new Baggage[5];
 
-        private int nr = 0;
+        public int nr = 0;
 
         public static int nOfAirDesk = 0;
 
@@ -33,27 +33,29 @@ namespace Bagagesorteringssystem
         public string AddBaggage()
         {
             string msg = string.Empty;
-            
-            if (Monitor.TryEnter(baggages))
+
+            Monitor.Enter(baggages);
+
+            try
             {
-                try
+                if (baggages.Any(x => x == null))
                 {
-                    if (baggages.Any(x => x == null))
-                    {
-                        string destination = destinations[random.Next(0, destinations.Length - 1)];
+                    string destination = destinations[random.Next(0, destinations.Length - 1)];
 
-                        Baggage baggage = new Baggage(destination);
+                    Baggage baggage = new Baggage(destination);
 
-                        baggages[Array.IndexOf(baggages, null)] = baggage;
+                    baggages[Array.IndexOf(baggages, null)] = baggage;
 
-                        msg = $"Baggage nr. {baggage.nr} added to AirDesk nr. {nr}";
-                    }
-                }
-                finally
-                {
-                    Monitor.Exit(baggages);
+                    msg = $"Baggage {baggage.destination} and nr. {baggage.nr} added to AirDesk nr. {nr}";
+
+                    Monitor.PulseAll(Producer._producerLock);
                 }
             }
+            finally
+            {
+                Monitor.Exit(baggages);
+            }
+
             return msg;
         }
 

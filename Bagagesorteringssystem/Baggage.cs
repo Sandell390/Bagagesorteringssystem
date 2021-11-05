@@ -12,7 +12,7 @@ namespace Bagagesorteringssystem
 
         public static int nOfBaggage;
 
-        private string destination;
+        public string destination;
 
         public Baggage(string destination)
         {

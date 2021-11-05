@@ -19,9 +19,17 @@ namespace Bagagesorteringssystem
             while (true)
             {
                 string message = producer.BagageProducer();
-                Console.WriteLine(message);
+                if (message != "")
+                {
+                    Console.WriteLine(message.Pastel(Color.Green));
+                }
+                else
+                {
+                    Console.WriteLine("Producer is waiting");
+                    producer.ProducerWait();
+                }
 
-                Thread.Sleep(1000);
+                Thread.Sleep(50);
             }
         }
 
@@ -31,19 +39,39 @@ namespace Bagagesorteringssystem
             Sortering sortering = new Sortering();
             while (true)
             {
+                string message = sortering.SortBaggage();
+                if (message != "")
+                {
+                    Console.WriteLine(message.Pastel(Color.LightGreen));
+                }
+                else
+                {
+                    Console.WriteLine("Sorting is waiting");
+                    sortering.SortWait();
+                }
+                
 
-                Console.WriteLine($"{sortering.SortBaggage()}");
 
-                Thread.Sleep(1000);
+                Thread.Sleep(50);
             }
         }
 
         public static void PlaneView()
         {
-            Console.WriteLine("Creating Consumer");
+            Console.WriteLine("Creating Plane");
             Plane plane = new Plane();
             while (true)
             {
+                string message = plane.BagageConsumer();
+                if (message != "")
+                {
+                    Console.WriteLine(message.Pastel(Color.Red));
+                }
+                else
+                {
+                    Console.WriteLine("Plane is waiting");
+                    plane.PlaneWait();
+                }
 
                 Thread.Sleep(1000);
             }
